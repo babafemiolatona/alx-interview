@@ -1,45 +1,45 @@
 #!/usr/bin/python3
-"""Prime Game"""
+"""
+Prime Game
+"""
+
+
+def primes(n):
+    """
+    Returns list of prime numbers between 1 and n inclusive
+    """
+    prime = []
+    sieve = [True] * (n + 1)
+    for p in range(2, n + 1):
+        if (sieve[p]):
+            prime.append(p)
+            for i in range(p, n + 1, p):
+                sieve[i] = False
+    return prime
 
 
 def isWinner(x, nums):
     """
-    Returns the name of the player that won the most rounds
+    Determines the winner of Prime Game
+
+    Args:
+        x (int): number of rounds
+        nums (int): upper limit of range for each round
+
+    Return:
+        Name of winner (Maria or Ben) or None if winner cannot be found
     """
-    def sieve(n):
-        primes = [True for _ in range(n+1)]
-        p = 2
-        while p * p <= n:
-            if primes[p]:
-                for i in range(p * p, n+1, p):
-                    primes[i] = False
-            p += 1
-        primes[0] = primes[1] = False
-        return primes
-
-    max_num = max(nums)
-    primes = sieve(max_num)
-
-    Maria_score = Ben_score = 0
-    for n in nums:
-        numbers = list(range(2, n+1))
-        turn = 0
-        while numbers:
-            for prime in primes[2:n+1]:
-                if prime in numbers:
-                    numbers = [num for num in numbers if num % prime != 0]
-                    break
-            else:
-                break
-            turn += 1
-        if turn % 2 == 1:
-            Maria_score += 1
-        else:
-            Ben_score += 1
-
-    if Maria_score > Ben_score:
-        return "Maria"
-    elif Ben_score > Maria_score:
-        return "Ben"
-    else:
+    if x is None or nums is None or x == 0 or nums == []:
         return None
+    Maria = Ben = 0
+    for i in range(x):
+        prime = primes(nums[i])
+        if len(prime) % 2 == 0:
+            Ben += 1
+        else:
+            Maria += 1
+    if Maria > Ben:
+        return 'Maria'
+    elif Ben > Maria:
+        return 'Ben'
+    return None
