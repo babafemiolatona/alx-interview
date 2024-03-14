@@ -19,13 +19,20 @@ def isWinner(x, nums):
 
     max_num = max(nums)
     primes = sieve(max_num)
-    prime_counts = [0] * (max_num + 1)
-    for i in range(2, max_num + 1):
-        prime_counts[i] = prime_counts[i-1] + (1 if primes[i] else 0)
 
     Maria_score = Ben_score = 0
     for n in nums:
-        if prime_counts[n] % 2 == 1:
+        numbers = list(range(2, n+1))
+        turn = 0
+        while numbers:
+            for prime in primes[2:n+1]:
+                if prime in numbers:
+                    numbers = [num for num in numbers if num % prime != 0]
+                    break
+            else:
+                break
+            turn += 1
+        if turn % 2 == 1:
             Maria_score += 1
         else:
             Ben_score += 1
